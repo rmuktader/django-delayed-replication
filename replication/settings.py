@@ -96,6 +96,20 @@ DATABASES = {
 }
 DATABASE_ROUTERS = []
 
+REPLICA_DB = env.str('DB_REPLICA_NAME', default=None)
+if REPLICA_DB and REPLICA_DB.lower() not in ('none', 'null'):
+    DATABASES['replica'] = {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'CONN_MAX_AGE': env.int('DB_CONN_MAX_AGE', default=0),
+        'NAME': env.str('DB_NAME'),
+        'USER': env.str('DB_USERNAME'),
+        'PASSWORD': env.str('DB_PASSWORD'),
+        'HOST': REPLICA_DB,
+        'PORT': env.str('DB_PORT'),
+        'ATOMIC_REQUESTS': True,
+    }
+    DATABASE_ROUTERS.append('main.routers.PrimaryReplicaRouter')
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
