@@ -47,3 +47,5 @@ COPY . .
 RUN useradd user -s /bin/bash && chown -R user /code
 # RUN useradd -d /code -m -s /bin/bash user
 USER user
+
+ENTRYPOINT ["/code/entrypoint.sh"]
