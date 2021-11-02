@@ -7,11 +7,22 @@ services:
       context: .
       args:
         DJANGO_ENV: development
-    command: "python -Wd manage.py migrate &&
-              python -Wd manage.py runserver 0.0.0.0:8000"
+    command: >
+      bash -c "python manage.py migrate
+      && python manage.py runserver 0.0.0.0:8000"
+    environment:
+      - DB_HOST=postgresql-master
+      - DB_PORT=5432
+      - DB_NAME=my_database
+      - DB_USERNAME=my_user
+      - DB_PASSWORD=my_password
+      - DB_REPLICA_NAME=postgresql-slave
     ports:
       - "8000:8000"
       - "3000:3000" # for python debugger
+    depends_on:
+      - postgresql-master
+      - postgresql-slave
     volumes:
       - .:/code
 
