@@ -1,0 +1,16 @@
+version: '3.9'
+services:
+  web:
+    image: "replication:dev"
+    build:
+      target: development_build
+      context: .
+      args:
+        DJANGO_ENV: development
+    command: "python -Wd manage.py migrate &&
+              python -Wd manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+      - "3000:3000" # for python debugger
+    volumes:
+      - .:/code
