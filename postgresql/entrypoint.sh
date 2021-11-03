@@ -3,6 +3,7 @@
 # shellcheck disable=SC1091
 
 # orriding: https://github.com/bitnami/bitnami-docker-postgresql/blob/master/10/debian-10/rootfs/opt/bitnami/scripts/postgresql/entrypoint.sh
+echo "Calling script to add delay to slave..."
 
 set -o errexit
 set -o nounset
@@ -21,6 +22,7 @@ print_welcome_page
 # Enable the nss_wrapper settings
 postgresql_enable_nss_wrapper
 
+/add-delay-to-slave.sh
 
 if [[ "$*" = *"/opt/bitnami/scripts/postgresql/run.sh"* ]]; then
     info "** Starting PostgreSQL setup **"
