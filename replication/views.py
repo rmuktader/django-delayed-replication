@@ -16,4 +16,9 @@ def index(request):
     except ReplicationTestRecord.DoesNotExist:
         read_ts = 'Unknown'
 
-    return HttpResponse(f"Write TS: {now}, Read TS: {read_ts}")
+    with connections['replica'].cursor() as cursor:
+       cursor.execute("select now()-pg_last_xact_replay_timestamp() as replication_lag" )
+       row = cursor.fetchone()
+       lag = row
+
+    return HttpResponse(f"Write TS: {now}, Read TS: {read_ts}, Last replication TS: {lag}")
