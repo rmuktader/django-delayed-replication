@@ -18,11 +18,9 @@ class PrimaryReplicaRouter:
         Reads go to the replica.
         """
         tbl = model._meta.db_table
-        if tbl != 'constance_config':
-            from constance import config
 
-            if config.READ_WRITE_ROUTING and tbl not in self.default_only:
-                return 'replica'
+        if tbl not in self.default_only:
+            return 'replica'
         return 'default'
 
     def db_for_write(self, model, **hints):
