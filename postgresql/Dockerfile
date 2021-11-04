@@ -6,4 +6,5 @@ RUN apt update -y \
   iproute2
 
 COPY add-delay-to-slave.sh /
+COPY libpostgresql.sh /opt/bitnami/scripts/libpostgresql.sh
 COPY entrypoint.sh /opt/bitnami/scripts/postgresql/entrypoint.sh
