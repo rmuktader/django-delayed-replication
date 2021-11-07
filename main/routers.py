@@ -6,12 +6,7 @@ class PrimaryReplicaRouter:
 
     db_set = {'default', 'replica'}
     # set of table names that should always use the default/writer DB
-    default_only = {
-        'auth_user',
-        'core_profile',
-        'content_access_siteuser',
-        'constance_config',
-    }
+    default_only = {}
 
     def db_for_read(self, model, **hints):
         """
