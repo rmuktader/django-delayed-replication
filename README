@@ -1,0 +1,44 @@
+The archive contains docker-compose configuration for Django sample
+application and PostgreSQL replicated database.
+
+Change into the directory with 'docker-compose.yml' file and run 'docker-compose build'.
+
+After the build run 'docker-compose up'. It will bring the DB and the
+application up. For the first time it takes about a minute to initialize DB.
+
+After starting the stack for the first time you need run migrations with
+following command:
+
+docker-compose run web /code/manage.py migrate
+
+The test Django applicaiton is accessible at the http://localhost:8000/.
+
+There is a test code in test/views.py to demonstrate read-after-write
+inconsistency which can be triggered by visiting http://localhost:8000/test/
+
+The test code creates a test record with ID=1 and strores current timestamp in
+the record's text field and writes this record into the DB and then
+immediatelly tries to read the record with the same ID=1 back and check the
+timestamp from the that record. The test code also reports the replication lag
+as reported by the slave DB itself but this can be imprecise as it reports the
+time since the last communication with the master DB so if there was no
+records written/updated then the lag will be reported as very large. For
+better results you need to refresh the /test/ page multiple times.
+
+The DB lag is implemented by forcing network delay between master and slave
+and currently set to 1000ms = 1s. Actual replication lag will be a little
+bit higher than network delay. The network delay can be adjusted by modifying
+DELAY_MS variable in postgresql/add-delay-to-slave.sh script and rebuilding
+all images with 'docker-composer build' and restarting all containers.
+
+To use this stack with existing project you can either copy the docker related
+files to your project directory or copy your project files to this directory.
+
+The list of the docker files needed:
+docker-compose.yml
+Dockerfile
+entrypoint.sh
+postgresql/*
+
+You will need to check and adjust your application DB configuration in
+routers.py and settings.py
