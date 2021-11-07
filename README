@@ -13,6 +13,10 @@ docker-compose run web /code/manage.py migrate
 
 The test Django applicaiton is accessible at the http://localhost:8000/.
 
+To verify the delay between PostgreSQL master and slave run following command:
+
+docker-compose exec postgresql-master ping postgresql-slave
+
 There is a test code in test/views.py to demonstrate read-after-write
 inconsistency which can be triggered by visiting http://localhost:8000/test/
 
