@@ -1,6 +1,8 @@
 The archive contains docker-compose configuration for Django sample
 application and PostgreSQL replicated database.
 
+This app is put together using the Bitnami Postgres image (https://github.com/bitnami/bitnami-docker-postgresql).The reason for using this image is the fact that replication is tricky to get working automatically in every case. Bitnami has replication features baked in and has more than 1K of lines of code covering many edge cases of replication (https://github.com/bitnami/bitnami-docker-postgresql/blob/master/10/debian-10/rootfs/opt/bitnami/scripts/libpostgresql.sh). They still have bugs. Yet, it is the most solid implementation of Docker Postgres implementation out there right now. It would not be possible to build such a robust replication stack from scratch. There are articles on the internet that show how to build replication stack but they also have many complaints associated with them. At best they are of "works on my machine" quality.
+
 Change into the directory with 'docker-compose.yml' file and run 'docker-compose build'.
 
 After the build run 'docker-compose up'. It will bring the DB and the
